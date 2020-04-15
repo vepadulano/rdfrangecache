@@ -1,7 +1,6 @@
-#include <iostream>
 #include <TChain.h>
-#include <ROOT/RDataFrame.hxx>
 #include <TEnv.h>
+#include <TH1.h>
 
 int main(){
     gEnv->SetValue("TFile.AsyncPrefetching", 1);
@@ -13,16 +12,30 @@ int main(){
     TChain chain{treename};
     chain.Add(filename);
 
-    // Cluster boundaries from the second cluster to the end of the tree
-    auto start = 821696;
-    auto end = 61540413;
+    // Cluster boundaries of first half of the tree
+    auto start = 0;
+    auto end = 31224410;
     
     chain.SetCacheEntryRange(start, end);
 
-    ROOT::RDataFrame rdf{chain};
-    auto rdf_range = rdf.Range(start,end);
+    UInt_t nMuon;
+    chain.SetBranchStatus("*",0);
+    chain.SetBranchStatus("nMuon",1);
+    chain.SetBranchAddress("nMuon",&nMuon);
 
-    auto h = rdf_range.Histo1D({"name","title",100,0,100},"nMuon");
-    
+    auto h = std::make_unique<TH1I>("nMuon","nMuon",100,0,10);
+    for(auto i = start; i < end; i ++){
+        chain.GetEntry(i);
+        h->Fill(nMuon);
+    }
     h->Print();
 }
+
+
+
+
+
+
+
+
+

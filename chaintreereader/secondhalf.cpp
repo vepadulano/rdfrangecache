@@ -15,20 +15,23 @@ int main(){
     auto  chain = std::make_shared<TChain>(treename);
     chain->Add(filename);
 
-    // Cluster boundaries of first half of the tree
-    auto start = 0;
-    auto end = 31224410;
-    
-    chain->SetCacheEntryRange(start, end);
+    // Cluster boundaries of second half of the tree
+    auto start = 31224410;
+    auto end = 61540413;
 
     TTreeReader reader(chain.get());
     TTreeReaderValue<UInt_t> nMuon(reader, "nMuon");
     
-    // reader.SetEntriesRange(start,end);
+    reader.SetEntriesRange(start,end);  // RDF never calls SetEntriesRange
 
     auto h = std::make_unique<TH1I>("nMuon","nMuon",100,0,10);
+    
+    std::cout << "Starting the while loop" << std::endl;
     while(reader.Next()){
-        if (reader.GetCurrentEntry() >= end) continue;
+        // This mimics the internal behaviour of RDF
+        // auto curentry = reader.GetCurrentEntry();
+        // if (curentry < start) continue;
+        // if (curentry == end) break;
         h->Fill(*nMuon);
     }
     h->Print();

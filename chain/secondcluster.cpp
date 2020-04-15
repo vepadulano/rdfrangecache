@@ -1,4 +1,3 @@
-#include <iostream>
 #include <TChain.h>
 #include <TEnv.h>
 #include <TH1.h>
@@ -13,9 +12,9 @@ int main(){
     TChain chain{treename};
     chain.Add(filename);
 
-    // Cluster boundaries of first half of the tree
-    auto start = 0;
-    auto end = 31224410;
+    // Cluster boundaries of second cluster of the tree
+    auto start = 821695;
+    auto end = 1643390;
     
     chain.SetCacheEntryRange(start, end);
 
