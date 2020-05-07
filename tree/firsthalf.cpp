@@ -10,7 +10,7 @@ int main(){
 
     auto treename = "Events";
     auto filename = "root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root";
-
+    
     auto f = TFile::Open(filename);
     auto tree = f->Get<TTree>(treename);
 
@@ -19,14 +19,14 @@ int main(){
     tree->SetBranchStatus("nMuon",1);
     tree->SetBranchAddress("nMuon",&nMuon);
 
-    // Cluster boundaries of second cluster of the tree
-    auto start = 821695;
-    auto end = 1643390;
+    // Cluster boundaries of first half of the tree
+    auto start = 0;
+    auto end = 31224410;
     
     tree->SetCacheEntryRange(start, end);
 
     auto h = std::make_unique<TH1I>("nMuon","nMuon",100,0,10);
-    std::cout << "\nStarting event loop.\n";
+    std::cout << "Starting event loop." << std::endl;
     for(auto i = start; i < end; i ++){
         tree->GetEntry(i);
         h->Fill(nMuon);

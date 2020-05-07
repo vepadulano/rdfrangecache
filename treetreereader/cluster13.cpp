@@ -15,9 +15,9 @@ int main(){
     auto f = TFile::Open(filename);
     auto tree = f->Get<TTree>(treename);
 
-    // Cluster boundaries of second cluster of the tree
-    auto start = 821695;
-    auto end = 1643390;
+    // Cluster boundaries of cluster 13
+    auto start = 10682035;
+    auto end = 11503730;
 
     TTreeReader reader(tree);
     TTreeReaderValue<UInt_t> nMuon(reader, "nMuon");

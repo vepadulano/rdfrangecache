@@ -13,7 +13,7 @@ int main(){
     auto filename = "root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root";
     
     auto f = TFile::Open(filename);
-    TTree* tree = static_cast<TTree*>(f->Get(treename));
+    auto tree = f->Get<TTree>(treename);
 
     // Cluster boundaries from the second cluster to the end of the tree
     auto start = 821695;

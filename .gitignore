@@ -1,21 +1,26 @@
 chain/*
 !chain/*.cpp
 !chain/*.py
+!chain/*.sh
 
 rdf/*
 !rdf/*.cpp
 !rdf/*.py
+!rdf/*.sh
 
 chaintreereader/*
 !chaintreereader/*.cpp
 !chaintreereader/*.py
+!chaintreereader/*.sh
 
 tree/*
 !tree/*.cpp
 !tree/*.py
+!tree/*.sh
 
 treetreereader/*
 !treetreereader/*.cpp
 !treetreereader/*.py
+!treetreereader/*.sh
 
 !README.md

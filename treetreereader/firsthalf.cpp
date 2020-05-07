@@ -12,23 +12,26 @@ int main(){
     auto treename = "Events";
     auto filename = "root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root";
     
-    auto  chain = std::make_shared<TChain>(treename);
-    chain->Add(filename);
+    auto f = TFile::Open(filename);
+    TTree* tree = static_cast<TTree*>(f->Get(treename));
 
-    // Cluster boundaries from the second cluster to the end of the tree
-    auto start = 821696;
-    auto end = 61540413;
-    
-    chain->SetCacheEntryRange(start, end);
+    // Cluster boundaries of first half of the tree
+    auto start = 0;
+    auto end = 31224410;
 
-    TTreeReader reader(chain.get());
+    TTreeReader reader(tree);
     TTreeReaderValue<UInt_t> nMuon(reader, "nMuon");
     
-    reader.SetEntriesRange(start,end);
+    reader.SetEntriesRange(start,end);  // RDF never calls SetEntriesRange
 
     auto h = std::make_unique<TH1I>("nMuon","nMuon",100,0,10);
     
+    std::cout << "Starting the while loop" << std::endl;
     while(reader.Next()){
+        // This mimics the internal behaviour of RDF
+        // auto curentry = reader.GetCurrentEntry();
+        // if (curentry < start) continue;
+        // if (curentry == end) break;
         h->Fill(*nMuon);
     }
     h->Print();

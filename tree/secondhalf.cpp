@@ -12,7 +12,7 @@ int main(){
     auto filename = "root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root";
     
     auto f = TFile::Open(filename);
-    TTree* tree = static_cast<TTree*>(f->Get(treename));
+    auto tree = f->Get<TTree>(treename);
 
     UInt_t nMuon;
     tree->SetBranchStatus("*",0);
@@ -26,7 +26,7 @@ int main(){
     tree->SetCacheEntryRange(start, end);
 
     auto h = std::make_unique<TH1I>("nMuon","nMuon",100,0,10);
-    std::cout << "Starting event loop." << std::endl;
+    std::cout << "\nStarting event loop.\n";
     for(auto i = start; i < end; i ++){
         tree->GetEntry(i);
         h->Fill(nMuon);

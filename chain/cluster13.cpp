@@ -13,13 +13,19 @@ int main(){
     TChain chain{treename};
     chain.Add(filename);
 
+    // Cluster boundaries of cluster 13
+    auto start = 10682035;
+    auto end = 11503730;
+    
+    chain.SetCacheEntryRange(start, end);
+
     UInt_t nMuon;
     chain.SetBranchStatus("*",0);
     chain.SetBranchStatus("nMuon",1);
     chain.SetBranchAddress("nMuon",&nMuon);
 
     auto h = std::make_unique<TH1I>("nMuon","nMuon",100,0,10);
-    for(auto i = 0; i < chain.GetEntries(); i ++){
+    for(auto i = start; i < end; i ++){
         chain.GetEntry(i);
         h->Fill(nMuon);
     }

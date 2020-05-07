@@ -14,7 +14,7 @@ int main(){
     chain.Add(filename);
 
     // Cluster boundaries from the second cluster to the end of the tree
-    auto start = 821696;
+    auto start = 821695;
     auto end = 61540413;
     
     chain.SetCacheEntryRange(start, end);
